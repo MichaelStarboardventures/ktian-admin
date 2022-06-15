@@ -1,8 +1,9 @@
 import { PageProps } from '@/pages/home/home.props';
+import { request } from '@/utils';
 import { Editor } from '@starboard-ventures/pangu.ui.editor';
 import { Card, Empty, message } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
-import { Link, request } from 'umi';
+import { Link } from 'umi';
 
 const Dashboard = () => {
   const [data, setData] = useState<PageProps | null>(null);

@@ -1,8 +1,9 @@
 import { PageProps } from '@/pages/home/home.props';
+import { request } from '@/utils';
 import { ProColumns, ProTable } from '@ant-design/pro-table';
 import { Button, Checkbox, Col, message, Row } from 'antd';
 import moment from 'moment';
-import { history, request } from 'umi';
+import { history } from 'umi';
 
 const columns: ProColumns[] = [
   {

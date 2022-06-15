@@ -1,4 +1,5 @@
 import { PageProps } from '@/pages/home/home.props';
+import { request } from '@/utils';
 import {
   ModalForm,
   ProFormSwitch,
@@ -7,7 +8,7 @@ import {
 import { Editor } from '@starboard-ventures/pangu.ui.editor';
 import { message } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
-import { history, request } from 'umi';
+import { history } from 'umi';
 
 const useOnPublish = (
   setVisible: React.Dispatch<React.SetStateAction<boolean>>,
