@@ -5,16 +5,17 @@ export default defineConfig({
     type: 'none',
   },
   routes: [
-    { path: '/', redirect: '/dashboard' },
+    { path: '/', exact: true, redirect: '/dashboard' },
     { path: '/dashboard', component: '@/pages/dashboard/index' },
     { path: '/home', component: '@/pages/home/index' },
     { path: '/home/detail', component: '@/pages/home/detail/index' },
+    { path: '/manage', component: '@/pages/manage/index' },
   ],
   fastRefresh: {},
   layout: {},
   proxy: {
     '/api': {
-      target: 'http://localhost:3002',
+      target: 'http://localhost:3500',
       changeOrigin: true,
     },
   },

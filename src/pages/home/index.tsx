@@ -57,7 +57,7 @@ const columns: ProColumns[] = [
               type={'text'}
               onClick={async () => {
                 try {
-                  await request(`/api/page/${record.id}`, {
+                  await request(`/api/pages/${record.id}`, {
                     method: 'delete',
                   });
 
@@ -94,7 +94,7 @@ const Home = () => {
       ]}
       request={async () => {
         try {
-          const data = await request('/api/page', {
+          const data = await request('/api/pages', {
             method: 'get',
           });
 

@@ -10,7 +10,7 @@ const Dashboard = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      const res = await request<PageProps[]>('/api/page', {
+      const res = await request<PageProps[]>('/api/pages', {
         method: 'get',
         params: {
           mainPage: 1,

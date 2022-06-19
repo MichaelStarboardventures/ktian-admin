@@ -91,12 +91,11 @@ const Detail = () => {
 
               goBack();
             } else {
-              await request('/api/page', {
+              await request(`/api/page/${query.id}`, {
                 method: 'put',
                 data: {
                   ...values,
                   data: content,
-                  id: query?.id,
                   mainPage: Boolean(values.mainPage) ? 1 : 0,
                 },
               });
