@@ -16,6 +16,10 @@ export const layout = (): BasicLayoutProps => {
           name: 'Manage',
           path: '/manage',
         },
+        {
+          name: 'Collects',
+          path: '/collects',
+        },
       ],
     },
   };

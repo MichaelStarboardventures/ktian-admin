@@ -10,6 +10,7 @@ export default defineConfig({
     { path: '/home', component: '@/pages/home/index' },
     { path: '/home/detail', component: '@/pages/home/detail/index' },
     { path: '/manage', component: '@/pages/manage/index' },
+    { path: '/collects', component: '@/pages/collects/index' },
   ],
   fastRefresh: {},
   layout: {},

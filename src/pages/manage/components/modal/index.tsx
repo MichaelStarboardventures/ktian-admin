@@ -4,22 +4,19 @@ import {
   ModalForm,
   ModalFormProps,
   ProFormCheckbox,
-  ProFormInstance,
   ProFormSelect,
   ProFormText,
   RequestOptionsType,
 } from '@ant-design/pro-components';
-import React, { useRef, useState } from 'react';
+import React, { memo, useState } from 'react';
 
 type ModalProps = { id?: string } & ModalFormProps;
 
-export const Modal: React.FC<ModalProps> = ({ trigger, onFinish, id }) => {
+const ModalComponent: React.FC<ModalProps> = ({ trigger, onFinish, id }) => {
   const [initialState, setInitialState] = useState<ManageProps | null>(null);
-  const formRef = useRef<ProFormInstance>();
 
   return (
     <ModalForm
-      formRef={formRef}
       title={id ? 'Edit' : 'Create'}
       trigger={trigger}
       onFinish={onFinish}
@@ -52,13 +49,24 @@ export const Modal: React.FC<ModalProps> = ({ trigger, onFinish, id }) => {
       <ProFormText name={'custom'} hidden={true} />
       <ProFormText
         name={'name'}
-        required={true}
         placeholder={'Please input api name'}
+        rules={[
+          {
+            required: true,
+            message: 'Please input api name',
+          },
+        ]}
       />
       <ProFormSelect
         name={'url'}
         required={true}
         placeholder={'Please select api url'}
+        rules={[
+          {
+            required: true,
+            message: 'Please input api url',
+          },
+        ]}
         request={async () => {
           try {
             const apis: ManageProps[] = await request('/api/apis', {
@@ -76,6 +84,12 @@ export const Modal: React.FC<ModalProps> = ({ trigger, onFinish, id }) => {
       />
       <ProFormCheckbox.Group
         name={'components'}
+        rules={[
+          {
+            required: true,
+            message: 'Select at least one component',
+          },
+        ]}
         request={async () => {
           try {
             const data: { name: string; type: string }[] = await request(
@@ -97,3 +111,5 @@ export const Modal: React.FC<ModalProps> = ({ trigger, onFinish, id }) => {
     </ModalForm>
   );
 };
+
+export const Modal = memo(ModalComponent, (prev, next) => prev.id === next.id);

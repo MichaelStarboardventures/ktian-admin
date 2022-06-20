@@ -51,6 +51,9 @@ const Manage = () => {
     {
       title: 'Type',
       dataIndex: 'custom',
+      render(text) {
+        return text ? 'custom' : 'default';
+      },
     },
     {
       title: 'Components',
@@ -97,7 +100,7 @@ const Manage = () => {
           onFinish={(params) => onFinish(params)}
           trigger={
             <Button key={'add'} type={'primary'}>
-              Add
+              Create
             </Button>
           }
         />,

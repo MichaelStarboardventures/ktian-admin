@@ -29,7 +29,7 @@ const fetchData = async (
     } = history;
     if (!query?.id) return;
 
-    const data = await request(`/api/page/${query.id}`, {
+    const data = await request(`/api/pages/${query.id}`, {
       method: 'get',
     });
 
@@ -80,7 +80,7 @@ const Detail = () => {
             } = history;
 
             if (query?.id === 'create' || !query?.id) {
-              await request('/api/page', {
+              await request('/api/pages', {
                 method: 'post',
                 data: {
                   ...values,
@@ -91,7 +91,7 @@ const Detail = () => {
 
               goBack();
             } else {
-              await request(`/api/page/${query.id}`, {
+              await request(`/api/pages/${query.id}`, {
                 method: 'put',
                 data: {
                   ...values,
@@ -110,8 +110,16 @@ const Detail = () => {
           return true;
         }}
       >
-        <ProFormText name={'title'} label={'Title'} />
-        <ProFormText name={'description'} label={'Description'} />
+        <ProFormText
+          name={'title'}
+          label={'Title'}
+          rules={[{ required: true, message: 'Title cannot be empty ' }]}
+        />
+        <ProFormText
+          name={'description'}
+          label={'Description'}
+          rules={[{ required: true, message: 'Description cannot be empty ' }]}
+        />
         <ProFormSwitch name={'mainPage'} label={'MainPage'} />
       </ModalForm>
     </>
