@@ -23,8 +23,11 @@ const Collects = () => {
 
         message.success(id ? 'Edit Success' : 'Create Success');
         action?.current?.reload();
+
+        return true;
       } catch (e) {
         message.error(id ? 'Edit failure' : 'Create failure');
+        return true;
       }
     },
     [],
@@ -68,7 +71,23 @@ const Collects = () => {
               />
             </Col>
             <Col>
-              <Button type={'text'}>delete</Button>
+              <Button
+                type={'text'}
+                onClick={async () => {
+                  try {
+                    await request(`/api/components/${record.id}`, {
+                      method: 'delete',
+                    });
+
+                    message.success('Delete successfully');
+                    actionRef?.current?.reload();
+                  } catch (e) {
+                    message.success('Delete failure');
+                  }
+                }}
+              >
+                delete
+              </Button>
             </Col>
           </Row>
         );
