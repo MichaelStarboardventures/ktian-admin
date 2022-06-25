@@ -7,3 +7,10 @@ export type PageProps = {
   title: string;
   description: string;
 };
+
+export type RouteProps = {
+  id: number;
+  name: string;
+  mainPage: 0 | 1;
+  routes: { id: string; name: string; path: string }[];
+};

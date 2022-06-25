@@ -1,16 +1,21 @@
-import { PageProps } from '@/pages/home/home.props';
+import { Route } from '@/pages/home/detail/route-context';
 import { request } from '@/utils';
-import { Editor } from '@starboard-ventures/pangu.ui.editor';
-import { Card, Empty, message } from 'antd';
+import { Empty, message } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
-import { Link } from 'umi';
+
+type RouteProps = {
+  id: number;
+  name: string;
+  routes: Route[];
+  mainPage: 0 | 1;
+};
 
 const Dashboard = () => {
-  const [data, setData] = useState<PageProps | null>(null);
+  const [data, setData] = useState<RouteProps | null>(null);
 
   const fetchData = useCallback(async () => {
     try {
-      const res = await request<PageProps[]>('/api/pages', {
+      const res = await request<RouteProps[]>('/api/routes', {
         method: 'get',
         params: {
           mainPage: 1,
@@ -27,17 +32,7 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
-  return data ? (
-    <Card
-      title={data?.title}
-      bordered={false}
-      extra={<Link to={'/home'}>More</Link>}
-    >
-      <Editor page data={data?.data || ''} />
-    </Card>
-  ) : (
-    <Empty />
-  );
+  return data ? 'hello' : <Empty />;
 };
 
 export default Dashboard;

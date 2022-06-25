@@ -1,128 +1,56 @@
-import { PageProps } from '@/pages/home/home.props';
-import { request } from '@/utils';
-import {
-  ModalForm,
-  ProFormSwitch,
-  ProFormText,
-} from '@ant-design/pro-components';
-import { Editor } from '@starboard-ventures/pangu.ui.editor';
-import { message } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
-import { history } from 'umi';
+import { Content } from '@/pages/home/detail/content';
+import { Route, RouteProvider } from '@/pages/home/detail/route-context';
+import { Routes } from '@/pages/home/detail/routes';
+import { Tool } from '@/pages/home/detail/tool';
+import { RouteProps } from '@/pages/home/home.props';
+import { Col, Empty, Row } from 'antd';
+import { useEffect, useMemo, useState } from 'react';
 
-const useOnPublish = (
-  setVisible: React.Dispatch<React.SetStateAction<boolean>>,
-  setContent: React.Dispatch<React.SetStateAction<string>>,
-) => {
-  return useCallback((data: string) => {
-    setVisible(true);
-    setContent(data);
-  }, []);
-};
+const useCurrentNode = (routes: Route[], selected?: string) => {
+  return useMemo(() => {
+    if (!selected || !routes.length) return null;
 
-const fetchData = async (
-  setData: React.Dispatch<React.SetStateAction<PageProps | null>>,
-) => {
-  try {
-    const {
-      location: { query },
-    } = history;
-    if (!query?.id) return;
-
-    const data = await request(`/api/pages/${query.id}`, {
-      method: 'get',
-    });
-
-    setData(data);
-  } catch (e) {
-    setData(null);
-  }
+    return routes?.find((route) => route.id === selected);
+  }, [selected, routes]);
 };
 
 const Detail = () => {
-  const [json, setJson] = useState<PageProps | null>(null);
-  const [visible, setVisible] = useState(false);
-  const [content, setContent] = useState('');
-  const onPublish = useOnPublish(setVisible, setContent);
+  const [routes, setRoutes] = useState<Route[]>([]);
+  const [selected, setSelected] = useState(routes[0]?.id);
+  const [update, setUpdate] = useState(0);
+  const [route, setRoute] = useState<RouteProps | null>(null);
+
+  const currentNode = useCurrentNode(routes, selected);
 
   useEffect(() => {
-    const {
-      location: { query },
-    } = history;
-
-    if (query?.id !== 'create') {
-      fetchData(setJson);
-    }
-  }, []);
+    selected && setUpdate(new Date().getTime());
+  }, [selected]);
 
   return (
-    <>
-      <Editor data={json?.data || ''} onPublish={onPublish} />
-      <ModalForm
-        visible={visible}
-        title={'Create Page'}
-        initialValues={{
-          title: json?.title,
-          description: json?.description,
-          mainPage: json?.mainPage,
-        }}
-        modalProps={{
-          onCancel() {
-            setVisible(false);
-          },
-          destroyOnClose: true,
-        }}
-        onFinish={async (values) => {
-          try {
-            const {
-              location: { query },
-              goBack,
-            } = history;
-
-            if (query?.id === 'create' || !query?.id) {
-              await request('/api/pages', {
-                method: 'post',
-                data: {
-                  ...values,
-                  data: content,
-                  mainPage: Boolean(values.mainPage) ? 1 : 0,
-                },
-              });
-
-              goBack();
-            } else {
-              await request(`/api/pages/${query.id}`, {
-                method: 'put',
-                data: {
-                  ...values,
-                  data: content,
-                  mainPage: Boolean(values.mainPage) ? 1 : 0,
-                },
-              });
-            }
-
-            setVisible(false);
-            message.success('Published successfully');
-          } catch (e) {
-            setContent('Publishing failed');
-          }
-
-          return true;
-        }}
-      >
-        <ProFormText
-          name={'title'}
-          label={'Title'}
-          rules={[{ required: true, message: 'Title cannot be empty ' }]}
-        />
-        <ProFormText
-          name={'description'}
-          label={'Description'}
-          rules={[{ required: true, message: 'Description cannot be empty ' }]}
-        />
-        <ProFormSwitch name={'mainPage'} label={'MainPage'} />
-      </ModalForm>
-    </>
+    <RouteProvider
+      routes={routes}
+      setRoutes={setRoutes}
+      selected={selected}
+      setSelected={setSelected}
+      route={route}
+      setRoute={setRoute}
+    >
+      <Row gutter={[0, 20]}>
+        <Col span={24}>
+          <Tool />
+        </Col>
+        <Col span={2} style={{ backgroundColor: '#fff' }}>
+          <Routes />
+        </Col>
+        <Col span={22}>
+          {routes?.length ? (
+            <Content key={update} route={currentNode} />
+          ) : (
+            <Empty description={'No routes'} />
+          )}
+        </Col>
+      </Row>
+    </RouteProvider>
   );
 };
 

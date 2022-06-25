@@ -1,4 +1,4 @@
-import { PageProps } from '@/pages/home/home.props';
+import { RouteProps } from '@/pages/home/home.props';
 import { request } from '@/utils';
 import { ProColumns, ProTable } from '@ant-design/pro-table';
 import { Button, Checkbox, Col, message, Row } from 'antd';
@@ -7,8 +7,8 @@ import { history } from 'umi';
 
 const columns: ProColumns[] = [
   {
-    title: 'title',
-    dataIndex: 'title',
+    title: 'name',
+    dataIndex: 'name',
   },
   {
     title: 'mainPage',
@@ -16,10 +16,6 @@ const columns: ProColumns[] = [
     render(mainPage) {
       return <Checkbox checked={Boolean(mainPage)} />;
     },
-  },
-  {
-    title: 'description',
-    dataIndex: 'description',
   },
   {
     title: 'createTime',
@@ -57,7 +53,7 @@ const columns: ProColumns[] = [
               type={'text'}
               onClick={async () => {
                 try {
-                  await request(`/api/pages/${record.id}`, {
+                  await request(`/api/routes/${record.id}`, {
                     method: 'delete',
                   });
 
@@ -80,7 +76,7 @@ const columns: ProColumns[] = [
 
 const Home = () => {
   return (
-    <ProTable<PageProps[]>
+    <ProTable<RouteProps[]>
       search={false}
       columns={columns}
       toolBarRender={() => [
@@ -94,12 +90,12 @@ const Home = () => {
       ]}
       request={async () => {
         try {
-          const data = await request('/api/pages', {
+          const data = await request('/api/routes', {
             method: 'get',
           });
 
           return {
-            data: data.map((ret: PageProps) => ({
+            data: data.map((ret: RouteProps) => ({
               ...ret,
               key: ret.id,
             })),
