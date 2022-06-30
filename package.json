@@ -24,7 +24,7 @@
     "@ant-design/pro-form": "^1.69.3",
     "@ant-design/pro-layout": "^6.5.0",
     "@ant-design/pro-table": "^2.76.3",
-    "@starboard-ventures/pangu.ui.editor": "^0.0.45",
+    "@starboard-ventures/pangu.ui.editor": "^0.0.47",
     "moment": "^2.29.3",
     "react": "17.x",
     "react-dom": "17.x",
